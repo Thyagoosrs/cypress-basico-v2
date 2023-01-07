@@ -49,7 +49,6 @@ Run `npm run test:mobile` to run tests in headless mode
 
 ## Support this project
 
-If you want to support this project, leave a .
 
 ___
 
