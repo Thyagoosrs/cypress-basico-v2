@@ -1,4 +1,6 @@
-/// <reference types="Cypress" />
+// / <reference types="Cypress" />
+
+// const { should } = require("chai")
 
 // const { last } = require("cypress/types/lodash")
 
@@ -120,20 +122,20 @@ describe('Central de Atendimento ao Cliente TAT', function () {
         // cy.get('input[type="radio"][value="feedback"]').check().should('have.value', 'feedback')
     })
 
-    it('marca ambos checkboxes, depois desmarca o último', function() {
+    it('marca ambos checkboxes, depois desmarca o último', function () {
         cy.get('input[type="checkbox"]')
-        .check()
-        .should('be.checked')
-        .last()
-        .uncheck()
-        .should('not.be.checked')
+            .check()
+            .should('be.checked')
+            .last()
+            .uncheck()
+            .should('not.be.checked')
     })
 
     it('seleciona um arquivo da pasta fixtures', function () {
         cy.get('input[type="file"]')
             .should('not.have.value')
             .selectFile('cypress/fixtures/example.json')
-            .should(function($input) {
+            .should(function ($input) {
                 // console.log($input)
                 expect($input[0].files[0].name).to.equal('example.json')
             })
@@ -143,7 +145,7 @@ describe('Central de Atendimento ao Cliente TAT', function () {
         cy.get('input[type="file"]')
             .should('not.have.value')
             .selectFile('cypress/fixtures/example.json', { action: 'drag-drop' })
-            .should(function($input) {
+            .should(function ($input) {
                 // console.log($input)
                 expect($input[0].files[0].name).to.equal('example.json')
             })
@@ -153,7 +155,7 @@ describe('Central de Atendimento ao Cliente TAT', function () {
         cy.fixture('example.json').as('sampleFile')
         cy.get('input[type="file"]')
             .selectFile('@sampleFile')
-            .should(function($input) {
+            .should(function ($input) {
                 expect($input[0].files[0].name).to.equal('example.json')
             })
     })
@@ -172,5 +174,48 @@ describe('Central de Atendimento ao Cliente TAT', function () {
 
         cy.contains('Talking About Testing').should('be.visible')
     })
+
+    it.only('exibe mensagem por 3 segundos', function () {
+        cy.clock() // congela o relógio do navegador
+
+        cy.get('.button').click()// (...) // ação que dispara algo que exibe uma mensagem por três segundos
+
+            .should('be.visible', 'Valide os campos obrigatórios!')// (...) // verificação de que a mensagem está visível
+
+        cy.tick(3000) // avança o relógio três segundos (em milissegundos). Avanço este tempo para não perdê-lo esperando.
+
+        cy.get('.error')
+            .should('not.be.visible', 'Valide os campos obrigatórios!')// (...) // verificação de que a mensagem não está mais visível
+    })
+
+    /* 
+    Código para validar tamanho do campo...
+    describe('cy.handsOn("maxlength")', () => {
+const text = Cypress._.repeat('1234567890', 101)
+const firstThousandChars = text.substring(0, 1000)
+
+beforeEach(() => {
+  cy.visit('./index.html')
+  cy.log(`Text has lenghth of: ${text.length}`)
+  cy.log(`Textarea has max lenghth of: ${firstThousandChars.length}`)
+})
+
+it('slowly fills a textarea field', () => {
+  cy.get('textarea')
+    .type(text)
+    .should('have.value', firstThousandChars)
+})
+
+it('quickly fills a textarea field', () => {
+  cy.get('textarea')
+    .type(text, { delay: 0 })
+    .should('have.value', firstThousandChars)
+})
+
+it('simply asserts on the textarea\'s maxlength attribute value', () => {
+  cy.get('textarea').should('have.attr', 'maxLength', '1000')
+})
+})
+    */
 
 })
